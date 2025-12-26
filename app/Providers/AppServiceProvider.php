@@ -2,6 +2,19 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\AssessmentRepositoryInterface;
+use App\Repositories\Contracts\EventRepositoryInterface;
+use App\Repositories\Contracts\ProductRepositoryInterface;
+use App\Repositories\Contracts\ProgramRepositoryInterface;
+use App\Repositories\Contracts\PublicationRepositoryInterface;
+use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Eloquent\AssessmentRepository;
+use App\Repositories\Eloquent\EventRepository;
+use App\Repositories\Eloquent\ProductRepository;
+use App\Repositories\Eloquent\ProgramRepository;
+use App\Repositories\Eloquent\PublicationRepository;
+use App\Repositories\Eloquent\UserRepository;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +24,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(ProgramRepositoryInterface::class, ProgramRepository::class);
+        $this->app->bind(PublicationRepositoryInterface::class, PublicationRepository::class);
+        $this->app->bind(EventRepositoryInterface::class, EventRepository::class);
+        $this->app->bind(AssessmentRepositoryInterface::class, AssessmentRepository::class);
+        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
     }
 
     /**
@@ -19,6 +37,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Schema::defaultStringLength(191);
     }
 }
