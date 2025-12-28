@@ -13,13 +13,31 @@ return new class extends Migration
     {
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->enum('item_type', ['program', 'publication', 'event', 'assessment', 'product']);
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+
+            $table->enum('item_type', [
+                'program',
+                'publication',
+                'event',
+                'assessment',
+                'product'
+            ]);
+
             $table->unsignedBigInteger('item_id');
+
             $table->integer('quantity')->default(1);
-            $table->string('selected_color')->nullable();
+
+            // For programs
             $table->enum('payment_option', ['full', 'installment'])->nullable();
+            $table->decimal('payable_amount', 10, 2); // actual amount added to cart
+
+            // For products
+            $table->string('selected_color')->nullable();
+            $table->string('selected_size')->nullable();
+
             $table->timestamps();
+
+            $table->unique(['user_id', 'item_type', 'item_id'], 'unique_cart_item');
         });
     }
 

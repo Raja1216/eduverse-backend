@@ -13,11 +13,20 @@ return new class extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained();
-            $table->string('item_type');
+            $table->foreignId('order_id')->constrained()->cascadeOnDelete();
+            $table->enum('item_type', [
+                'program',
+                'publication',
+                'event',
+                'assessment',
+                'product'
+            ]);
             $table->unsignedBigInteger('item_id');
+            $table->string('item_name');
             $table->decimal('price', 10, 2);
-            $table->integer('quantity');
+            $table->integer('quantity')->default(1);
+            // Program-specific
+            $table->enum('payment_option', ['full', 'installment'])->nullable();
             $table->timestamps();
         });
     }

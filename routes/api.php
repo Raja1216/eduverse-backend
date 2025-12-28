@@ -1,14 +1,28 @@
 <?php
 
+use App\Http\Controllers\Admin\EventImportController;
+use App\Http\Controllers\Admin\ProgramImportController;
+use App\Http\Controllers\Admin\PublicationImportController;
 use App\Http\Controllers\Assessment\AssessmentDetailController;
 use App\Http\Controllers\Assessment\AssessmentListController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Cart\AddToCartController;
+use App\Http\Controllers\Cart\CartListController;
+use App\Http\Controllers\Cart\ClearCartController;
+use App\Http\Controllers\Cart\RemoveCartController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Event\EventDetailController;
 use App\Http\Controllers\Event\EventListController;
 use App\Http\Controllers\Event\UpcomingEventController;
+use App\Http\Controllers\Order\CreateOrderController;
+use App\Http\Controllers\Order\OrderDetailController;
+use App\Http\Controllers\Order\OrderListController;
+use App\Http\Controllers\Payment\InitiatePaymentController;
+use App\Http\Controllers\Payment\PaymentFailureController;
+use App\Http\Controllers\Payment\PaymentSuccessController;
 use App\Http\Controllers\Product\FeaturedProductController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductDetailController;
@@ -29,6 +43,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('user/profile', [ProfileController::class, 'show']);
     Route::put('user/profile', [ProfileController::class, 'update']);
 
+    Route::get('cart', CartListController::class);
+    Route::post('cart/add', AddToCartController::class);
+    Route::delete('cart/{id}', RemoveCartController::class);
+    Route::delete('cart', ClearCartController::class);
+
+    Route::post('orders', CreateOrderController::class);
+    Route::get('orders', OrderListController::class);
+    Route::get('orders/{id}', OrderDetailController::class);
+
+    Route::post('payments/initiate/{orderId}', InitiatePaymentController::class);
+});
+
     Route::get('programs', ProgramListController::class);
     Route::get('programs/{id}', ProgramDetailController::class);
 
@@ -46,4 +72,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('products/featured', FeaturedProductController::class);
     Route::get('products/categories', ProductCategoryController::class);
     Route::get('products/{id}', ProductDetailController::class);
-});
+
+    Route::post('/contact-us', [ContactController::class, 'store']);
+
+
+Route::post('payments/success', PaymentSuccessController::class);
+Route::post('payments/failure', PaymentFailureController::class);
+
+Route::post('/admin/programs/import', [ProgramImportController::class, 'import']);
+Route::post('/admin/events/import', [EventImportController::class, 'import']);
+Route::post('/admin/publications/import', [PublicationImportController::class, 'import']);

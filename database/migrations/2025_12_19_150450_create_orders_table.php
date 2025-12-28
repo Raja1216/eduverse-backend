@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('order_code')->unique();
             $table->foreignId('user_id')->constrained();
-            $table->decimal('total', 10, 2);
-            $table->enum('status', ['pending', 'processing', 'completed', 'cancelled']);
-            $table->enum('payment_status', ['pending', 'paid', 'partial', 'failed']);
-            $table->json('shipping_address');
-            $table->json('billing_address');
+            $table->decimal('total_amount', 10, 2);
+            $table->enum('payment_type', ['full', 'installment']);
+            $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending');
+            $table->enum('payment_status', ['pending', 'paid', 'partial', 'failed'])->default('pending');
+            $table->json('shipping_address')->nullable();
+            $table->json('billing_address')->nullable();
             $table->timestamps();
         });
     }
