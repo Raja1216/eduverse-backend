@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\EventImportController;
+use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\ProgramImportController;
 use App\Http\Controllers\Admin\PublicationImportController;
 use App\Http\Controllers\Assessment\AssessmentDetailController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Cart\AddToCartController;
 use App\Http\Controllers\Cart\CartListController;
 use App\Http\Controllers\Cart\ClearCartController;
 use App\Http\Controllers\Cart\RemoveCartController;
+use App\Http\Controllers\CmsController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Event\EventDetailController;
 use App\Http\Controllers\Event\EventListController;
@@ -36,6 +38,16 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     Route::post('register', RegisterController::class);
     Route::post('login', LoginController::class);
+});
+
+Route::get('cms/page-content', [CmsController::class, 'getAll']);
+
+Route::get('cms/{key}', [CmsController::class, 'get']);
+
+
+Route::middleware(['auth:sanctum','admin'])->group(function () {
+    Route::put('cms/{key}', [CmsController::class, 'set']);
+    Route::post('admin/media/upload', [MediaController::class, 'upload']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {

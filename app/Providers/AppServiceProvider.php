@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Repositories\Contracts\AssessmentRepositoryInterface;
 use App\Repositories\Contracts\CartRepositoryInterface;
+use App\Repositories\Contracts\CmsRepositoryInterface;
 use App\Repositories\Contracts\EventRepositoryInterface;
 use App\Repositories\Contracts\OrderRepositoryInterface;
 use App\Repositories\Contracts\PaymentRepositoryInterface;
@@ -13,6 +14,7 @@ use App\Repositories\Contracts\PublicationRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Eloquent\AssessmentRepository;
 use App\Repositories\Eloquent\CartRepository;
+use App\Repositories\Eloquent\CmsRepository;
 use App\Repositories\Eloquent\EventRepository;
 use App\Repositories\Eloquent\OrderRepository;
 use App\Repositories\Eloquent\PaymentRepository;
@@ -39,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CartRepositoryInterface::class, CartRepository::class);
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
         $this->app->bind(PaymentRepositoryInterface::class, PaymentRepository::class);
+        $this->app->bind(CmsRepositoryInterface::class, CmsRepository::class);
     }
 
     /**
