@@ -2,8 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
-class CmsContent extends Model
+class CmsSimpleSection extends Model
 {
     protected $fillable = ['section_key', 'content', 'is_active'];
     protected $casts = [

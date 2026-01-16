@@ -14,7 +14,11 @@ use App\Http\Controllers\Cart\AddToCartController;
 use App\Http\Controllers\Cart\CartListController;
 use App\Http\Controllers\Cart\ClearCartController;
 use App\Http\Controllers\Cart\RemoveCartController;
+use App\Http\Controllers\CMS\CmsPageController;
+use App\Http\Controllers\CmsContentController;
+use App\Http\Controllers\CmsContentSectionController;
 use App\Http\Controllers\CmsController;
+use App\Http\Controllers\CmsSimpleSectionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Event\EventDetailController;
 use App\Http\Controllers\Event\EventListController;
@@ -40,15 +44,23 @@ Route::prefix('auth')->group(function () {
     Route::post('login', LoginController::class);
 });
 
-Route::get('cms/page-content', [CmsController::class, 'getAll']);
+Route::prefix('cms')->group(function () {
 
-Route::get('cms/{key}', [CmsController::class, 'get']);
+    Route::get('page-content', [CmsPageController::class, 'pageContent']);
 
+    // Main sections
+    Route::get('{key}', [CmsContentController::class, 'show']);
+    Route::put('{key}', [CmsContentController::class, 'update']);
 
-Route::middleware(['auth:sanctum','admin'])->group(function () {
-    Route::put('cms/{key}', [CmsController::class, 'set']);
-    Route::post('admin/media/upload', [MediaController::class, 'upload']);
+    // Simple sections
+    Route::get('simple-section/{key}', [CmsSimpleSectionController::class, 'show']);
+    Route::put('simple-section/{key}', [CmsSimpleSectionController::class, 'update']);
+
+    // Content meta sections
+    Route::get('content-section/{key}', [CmsContentSectionController::class, 'show']);
+    Route::put('content-section/{key}', [CmsContentSectionController::class, 'update']);
 });
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('auth/logout', LogoutController::class);
@@ -67,25 +79,25 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('payments/initiate/{orderId}', InitiatePaymentController::class);
 });
 
-    Route::get('programs', ProgramListController::class);
-    Route::get('programs/{id}', ProgramDetailController::class);
+Route::get('programs', ProgramListController::class);
+Route::get('programs/{id}', ProgramDetailController::class);
 
-    Route::get('publications', PublicationListController::class);
-    Route::get('publications/{id}', PublicationDetailController::class);
+Route::get('publications', PublicationListController::class);
+Route::get('publications/{id}', PublicationDetailController::class);
 
-    Route::get('events', EventListController::class);
-    Route::get('events/upcoming', UpcomingEventController::class);
-    Route::get('events/{id}', EventDetailController::class);
+Route::get('events', EventListController::class);
+Route::get('events/upcoming', UpcomingEventController::class);
+Route::get('events/{id}', EventDetailController::class);
 
-    Route::get('assessments', AssessmentListController::class);
-    Route::get('assessments/{id}', AssessmentDetailController::class);
+Route::get('assessments', AssessmentListController::class);
+Route::get('assessments/{id}', AssessmentDetailController::class);
 
-    Route::get('products', ProductListController::class);
-    Route::get('products/featured', FeaturedProductController::class);
-    Route::get('products/categories', ProductCategoryController::class);
-    Route::get('products/{id}', ProductDetailController::class);
+Route::get('products', ProductListController::class);
+Route::get('products/featured', FeaturedProductController::class);
+Route::get('products/categories', ProductCategoryController::class);
+Route::get('products/{id}', ProductDetailController::class);
 
-    Route::post('/contact-us', [ContactController::class, 'store']);
+Route::post('/contact-us', [ContactController::class, 'store']);
 
 
 Route::post('payments/success', PaymentSuccessController::class);

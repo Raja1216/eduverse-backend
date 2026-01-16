@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cms_contents', function (Blueprint $table) {
+        Schema::create('cms_simple_sections', function (Blueprint $table) {
             $table->id();
-            $table->string('key')->unique(); // hero, impact, navbar, footer...
-            $table->json('content');
+            $table->enum('section_key', ['pradip', 'think-solve'])->unique();
+            $table->json('content'); // store full JSON instead of many columns
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cms_contents');
+        Schema::dropIfExists('cms_simple_sections');
     }
 };
