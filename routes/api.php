@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAssessmentController;
+use App\Http\Controllers\Admin\AdminEventController;
+use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\AdminProgramController;
+use App\Http\Controllers\Admin\AdminPublicationController;
 use App\Http\Controllers\Admin\EventImportController;
-use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\ProgramImportController;
 use App\Http\Controllers\Admin\PublicationImportController;
 use App\Http\Controllers\Assessment\AssessmentDetailController;
@@ -14,11 +18,10 @@ use App\Http\Controllers\Cart\AddToCartController;
 use App\Http\Controllers\Cart\CartListController;
 use App\Http\Controllers\Cart\ClearCartController;
 use App\Http\Controllers\Cart\RemoveCartController;
+use App\Http\Controllers\CMS\CmsContentController;
+use App\Http\Controllers\CMS\CmsContentSectionController;
 use App\Http\Controllers\CMS\CmsPageController;
-use App\Http\Controllers\CmsContentController;
-use App\Http\Controllers\CmsContentSectionController;
-use App\Http\Controllers\CmsController;
-use App\Http\Controllers\CmsSimpleSectionController;
+use App\Http\Controllers\CMS\CmsSimpleSectionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Event\EventDetailController;
 use App\Http\Controllers\Event\EventListController;
@@ -59,6 +62,37 @@ Route::prefix('cms')->group(function () {
     // Content meta sections
     Route::get('content-section/{key}', [CmsContentSectionController::class, 'show']);
     Route::put('content-section/{key}', [CmsContentSectionController::class, 'update']);
+});
+
+
+Route::middleware(['auth:sanctum', 'admin'])
+    ->prefix('admin')
+    ->group(function () {
+
+    // Programs
+    Route::post('programs', [AdminProgramController::class, 'store']);
+    Route::put('programs/{id}', [AdminProgramController::class, 'update']);
+    Route::delete('programs/{id}', [AdminProgramController::class, 'destroy']);
+
+    // Events
+    Route::post('events', [AdminEventController::class, 'store']);
+    Route::put('events/{id}', [AdminEventController::class, 'update']);
+    Route::delete('events/{id}', [AdminEventController::class, 'destroy']);
+
+    // Products
+    Route::post('products', [AdminProductController::class, 'store']);
+    Route::put('products/{id}', [AdminProductController::class, 'update']);
+    Route::delete('products/{id}', [AdminProductController::class, 'destroy']);
+
+    // Publications
+    Route::post('publications', [AdminPublicationController::class, 'store']);
+    Route::put('publications/{id}', [AdminPublicationController::class, 'update']);
+    Route::delete('publications/{id}', [AdminPublicationController::class, 'destroy']);
+
+    // Assessments
+    Route::post('assessments', [AdminAssessmentController::class, 'store']);
+    Route::put('assessments/{id}', [AdminAssessmentController::class, 'update']);
+    Route::delete('assessments/{id}', [AdminAssessmentController::class, 'destroy']);
 });
 
 

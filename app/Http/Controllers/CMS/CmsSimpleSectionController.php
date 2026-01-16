@@ -1,7 +1,7 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CMS;
 
-use App\Http\Controllers\Controller\CMS;
+use App\Http\Controllers\Controller;
 use App\Models\CmsSimpleSection;
 use Illuminate\Http\Request;
 
