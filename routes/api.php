@@ -65,8 +65,7 @@ Route::prefix('cms')->group(function () {
 });
 
 
-Route::middleware(['auth:sanctum', 'admin'])
-    ->prefix('admin')
+Route::prefix('admin')
     ->group(function () {
 
     // Programs
