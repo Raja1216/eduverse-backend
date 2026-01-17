@@ -27,7 +27,16 @@ class AdminProgramController extends Controller
             'features' => 'nullable|array',
             'is_active' => 'boolean'
         ]);
+        $data['category'] = match ($data['category']) {
+            'classroom' => 'Live Classroom',
+            'self_paced' => 'Self-Paced',
+            'mock_test' => 'Mock Test Series',
+        };
 
+        $data['mode'] = match ($data['mode']) {
+            'online' => 'Online',
+            'offline' => 'Offline',
+        };
         return Program::create($data);
     }
 
@@ -53,7 +62,16 @@ class AdminProgramController extends Controller
             'features' => 'nullable|array',
             'is_active' => 'boolean'
         ]);
+        $data['category'] = match ($data['category']) {
+            'classroom' => 'Live Classroom',
+            'self_paced' => 'Self-Paced',
+            'mock_test' => 'Mock Test Series',
+        };
 
+        $data['mode'] = match ($data['mode']) {
+            'online' => 'Online',
+            'offline' => 'Offline',
+        };
         $program->update($data);
         return $program;
     }

@@ -65,8 +65,7 @@ Route::prefix('cms')->group(function () {
 });
 
 
-Route::prefix('admin')
-    ->group(function () {
+Route::prefix('admin')->group(function () {
 
     // Programs
     Route::post('programs', [AdminProgramController::class, 'store']);
