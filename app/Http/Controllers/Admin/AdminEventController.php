@@ -3,10 +3,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Traits\UploadsFiles;
 use Illuminate\Http\Request;
 
 class AdminEventController extends Controller
 {
+    use UploadsFiles;
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -22,7 +24,9 @@ class AdminEventController extends Controller
             'features' => 'nullable|array',
             'is_active' => 'boolean'
         ]);
-
+        if (!empty($data['image'])) {
+            $data['image'] = $this->handleImage($data['image'], 'events');
+        }
         return Event::create($data);
     }
 
@@ -43,7 +47,9 @@ class AdminEventController extends Controller
             'features' => 'nullable|array',
             'is_active' => 'boolean'
         ]);
-
+        if (!empty($data['image'])) {
+            $data['image'] = $this->handleImage($data['image'], 'events');
+        }
         $event->update($data);
         return $event;
     }

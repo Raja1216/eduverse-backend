@@ -3,10 +3,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Publication;
+use App\Traits\UploadsFiles;
 use Illuminate\Http\Request;
 
 class AdminPublicationController extends Controller
 {
+    use UploadsFiles;
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -18,7 +20,9 @@ class AdminPublicationController extends Controller
             'features' => 'nullable|array',
             'is_active' => 'boolean'
         ]);
-
+        if (!empty($data['image'])) {
+            $data['image'] = $this->handleImage($data['image'], 'publications');
+        }
         return Publication::create($data);
     }
 
@@ -35,7 +39,9 @@ class AdminPublicationController extends Controller
             'features' => 'nullable|array',
             'is_active' => 'boolean'
         ]);
-
+        if (!empty($data['image'])) {
+            $data['image'] = $this->handleImage($data['image'], 'publications');
+        }
         $item->update($data);
         return $item;
     }

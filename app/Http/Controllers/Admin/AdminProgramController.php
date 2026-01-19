@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Program;
 use Illuminate\Http\Request;
+use App\Traits\UploadsFiles;
 
 class AdminProgramController extends Controller
 {
+    use UploadsFiles;
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -37,6 +39,9 @@ class AdminProgramController extends Controller
             'online' => 'Online',
             'offline' => 'Offline',
         };
+        if (!empty($data['image'])) {
+            $data['image'] = $this->handleImage($data['image'], 'programs');
+        }
         return Program::create($data);
     }
 
@@ -52,7 +57,7 @@ class AdminProgramController extends Controller
             'class' => 'required|string',
             'subject' => 'required|string',
             'duration' => 'required|string',
-            'mode' => 'required|in:online,offline',
+            'mode' => 'required|in:online,offline,with_kit,without_kit',
             'mrp' => 'required|numeric',
             'selling_price' => 'required|numeric',
             'installments' => 'nullable|integer|min:1',
@@ -71,7 +76,12 @@ class AdminProgramController extends Controller
         $data['mode'] = match ($data['mode']) {
             'online' => 'Online',
             'offline' => 'Offline',
+            'with_kit' => 'With Kit',
+            'without_kit' => 'With Out Kit',
         };
+        if (!empty($data['image'])) {
+            $data['image'] = $this->handleImage($data['image'], 'programs');
+        }
         $program->update($data);
         return $program;
     }

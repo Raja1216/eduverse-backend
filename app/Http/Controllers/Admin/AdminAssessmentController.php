@@ -3,9 +3,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assessment;
+use App\Traits\UploadsFiles;
 use Illuminate\Http\Request;
 class AdminAssessmentController extends Controller
 {
+    use UploadsFiles;
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -17,7 +19,9 @@ class AdminAssessmentController extends Controller
             'features' => 'nullable|array',
             'is_active' => 'boolean'
         ]);
-
+        if (!empty($data['image'])) {
+            $data['image'] = $this->handleImage($data['image'], 'assessments');
+        }
         return Assessment::create($data);
     }
 
@@ -34,7 +38,9 @@ class AdminAssessmentController extends Controller
             'features' => 'nullable|array',
             'is_active' => 'boolean'
         ]);
-
+        if (!empty($data['image'])) {
+            $data['image'] = $this->handleImage($data['image'], 'assessments');
+        }
         $item->update($data);
         return $item;
     }

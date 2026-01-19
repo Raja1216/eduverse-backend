@@ -3,10 +3,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Traits\UploadsFiles;
 use Illuminate\Http\Request;
 
 class AdminProductController extends Controller
 {
+    use UploadsFiles;
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -24,7 +26,9 @@ class AdminProductController extends Controller
             'is_featured' => 'boolean',
             'is_active' => 'boolean'
         ]);
-
+        if (!empty($data['image'])) {
+            $data['image'] = $this->handleImage($data['image'], 'products');
+        }
         return Product::create($data);
     }
 
@@ -47,7 +51,9 @@ class AdminProductController extends Controller
             'is_featured' => 'boolean',
             'is_active' => 'boolean'
         ]);
-
+        if (!empty($data['image'])) {
+            $data['image'] = $this->handleImage($data['image'], 'products');
+        }
         $product->update($data);
         return $product;
     }
