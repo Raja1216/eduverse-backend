@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,6 +12,7 @@ return new class extends Migration
     {
         Schema::table('cms_simple_sections', function (Blueprint $table) {
             $table->foreignId('site_id')
+                ->default(1)
                 ->after('id')
                 ->constrained('sites')
                 ->cascadeOnDelete();
