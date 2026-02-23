@@ -47,21 +47,23 @@ Route::prefix('auth')->group(function () {
     Route::post('login', LoginController::class);
 });
 
-Route::prefix('cms')->group(function () {
-
-    Route::get('page-content', [CmsPageController::class, 'pageContent']);
-
-    // Main sections
-    Route::get('{key}', [CmsContentController::class, 'show']);
-    Route::put('{key}', [CmsContentController::class, 'update']);
-
-    // Simple sections
-    Route::get('simple-section/{key}', [CmsSimpleSectionController::class, 'show']);
-    Route::put('simple-section/{key}', [CmsSimpleSectionController::class, 'update']);
-
-    // Content meta sections
-    Route::get('content-section/{key}', [CmsContentSectionController::class, 'show']);
-    Route::put('content-section/{key}', [CmsContentSectionController::class, 'update']);
+Route::middleware('resolve.site')->group(function () {
+    Route::prefix('cms')->group(function () {
+    
+        Route::get('page-content', [CmsPageController::class, 'pageContent']);
+    
+        // Main sections
+        Route::get('{key}', [CmsContentController::class, 'show']);
+        Route::put('{key}', [CmsContentController::class, 'update']);
+    
+        // Simple sections
+        Route::get('simple-section/{key}', [CmsSimpleSectionController::class, 'show']);
+        Route::put('simple-section/{key}', [CmsSimpleSectionController::class, 'update']);
+    
+        // Content meta sections
+        Route::get('content-section/{key}', [CmsContentSectionController::class, 'show']);
+        Route::put('content-section/{key}', [CmsContentSectionController::class, 'update']);
+    });
 });
 
 

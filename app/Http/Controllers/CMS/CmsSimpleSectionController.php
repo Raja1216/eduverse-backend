@@ -10,13 +10,18 @@ class CmsSimpleSectionController extends Controller
 {
     public function show($key)
     {
-        return CmsSimpleSection::where('section_key', $key)->firstOrFail();
+        $site = app('currentSite');
+        return CmsSimpleSection::where('section_key', $key)->where('site_id', $site->id)->firstOrFail();
     }
 
     public function update(Request $request, $key)
     {
+        $site = app('currentSite');
         $data = CmsSimpleSection::updateOrCreate(
-            ['section_key' => $key],
+            [
+                'site_id' => $site->id,
+                'section_key' => $key
+            ],
             [
                 'content' => $request->all(),
                 'is_active' => $request->input('is_active', true)

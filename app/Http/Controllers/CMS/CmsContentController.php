@@ -12,11 +12,13 @@ class CmsContentController extends Controller
     use UploadsFiles;
     public function show($key)
     {
-        return CmsContent::where('section_key', $key)->firstOrFail();
+        $site = app('currentSite');
+        return CmsContent::where('section_key', $key)->where('site_id', $site->id)->firstOrFail();
     }
 
     public function update(Request $request, $key)
     {
+        $site = app('currentSite');
         $data = $request->all();
 
         // Handle common CMS file fields
@@ -30,7 +32,7 @@ class CmsContentController extends Controller
 
         foreach ($fileFields as $field) {
             if ($request->hasFile($field) || $request->filled($field)) {
-                $uploaded = $this->handleFileOrUrl($request, $field, 'cms/'.$key);
+                $uploaded = $this->handleFileOrUrl($request, $field, 'cms/' . $key);
                 if ($uploaded) {
                     $data[$field] = $uploaded;
                 }
@@ -38,7 +40,10 @@ class CmsContentController extends Controller
         }
 
         $content = CmsContent::updateOrCreate(
-            ['section_key' => $key],
+            [
+                'site_id' => $site->id,
+                'section_key' => $key
+            ],
             [
                 'content' => $data,
                 'is_active' => $request->input('is_active', true),
