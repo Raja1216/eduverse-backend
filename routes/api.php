@@ -68,7 +68,7 @@ Route::middleware('resolve.site')->group(function () {
 
 
 Route::prefix('admin')->group(function () {
-
+    Route::get('sites', [\App\Http\Controllers\Admin\SiteController::class, 'index']);
     // Programs
     Route::post('programs', [AdminProgramController::class, 'store']);
     Route::put('programs/{id}', [AdminProgramController::class, 'update']);
